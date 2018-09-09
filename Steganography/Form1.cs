@@ -19,7 +19,7 @@ namespace Steganography
         private void pbImage_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image Files(*.BMP;*.JPG;*.PNG)|*.bmp;*.jpg;*.png|All files (*.*)|*.*";
+            openFileDialog.Filter = "Image Files(*.BMP)|*.bmp";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
@@ -37,45 +37,85 @@ namespace Steganography
 
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
-            if (!tbText.Text.Equals(""))
+            if (pbImage.Image != null)
             {
-                string text = tbText.Text;
-                int length = text.Length;
                 Bitmap bitmap = new Bitmap(pbImage.Image);
-                int iText = 0;
-                if (length > bitmap.Height * bitmap.Width)
+
+                if (!tbText.Text.Equals(""))
                 {
-                    for (int i = 0; i < bitmap.Width; i++)
+                    string text = tbText.Text.Normalize();
+                    int length = text.Length;
+                    int iText = 0;
+                    if (length <= bitmap.Height * bitmap.Width)
                     {
-                        for (int j = 0; j < bitmap.Height; j++)
+                        for (int i = 0; i < bitmap.Height; i++)
                         {
-                            if (length <= 0)
+                            for (int j = 0; j < bitmap.Width; j++)
                             {
-                                Color color1 = bitmap.GetPixel(i, j);
-                                Color color2 = Color.FromArgb(color1.A, color1.R, color1.G, (int)text[iText]);
-                                bitmap.SetPixel(i, j, color2);
-                                iText++;
-                                length--;
+                                if (length > iText)
+                                {
+                                    Color color1 = bitmap.GetPixel(i, j);
+                                    Color color2 = Color.FromArgb(color1.A, color1.R, color1.G, (int)text[iText]);
+                                    bitmap.SetPixel(i, j, color2);
+                                    iText++;
+                                }
+                                else
+                                {
+                                    Color color1 = bitmap.GetPixel(i, j);
+                                    Color color2 = Color.FromArgb(color1.A, 13, color1.G, color1.B);
+                                    bitmap.SetPixel(i, j, color2);
+                                    pbImage.Image = (Image)bitmap;
+                                    return;
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Слишком длинное сообщение", "Ошибка",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Слишком длинное сообщение", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Вы не ввели сообщение", "Ошибка",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Вы не ввели сообщение", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Вы не выбрали изображение", "Ошибка",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnDecrypt_Click(object sender, EventArgs e)
         {
+            if (pbImage.Image != null)
+            {
+                Bitmap bitmap = new Bitmap(pbImage.Image);
 
+                for (int i = 0; i < bitmap.Height; i++)
+                {
+                    for (int j = 0; j < bitmap.Width; j++)
+                    {
+                        if (bitmap.GetPixel(i, j).R == 13)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            Color color = bitmap.GetPixel(i, j);
+                            tbText.Text += ((char)color.B).ToString();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Вы не выбрали изображение", "Ошибка",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -86,13 +126,13 @@ namespace Steganography
                 savedialog.Title = "Сохранить картинку как...";
                 savedialog.OverwritePrompt = true;
                 savedialog.CheckPathExists = true;
-                savedialog.Filter = "Image Files(*.JPG)|*.jpg|Image Files(*.BMP)|*.bmp|Image Files(*.PNG)|*.png|All files (*.*)|*.*";
+                savedialog.Filter = "Image Files(*.BMP)|*.bmp";
                 savedialog.ShowHelp = true;
                 if (savedialog.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
-                        pbImage.Image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        pbImage.Image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Bmp);
                     }
                     catch
                     {
@@ -100,6 +140,11 @@ namespace Steganography
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Вы не выбрали изображение", "Ошибка",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
