@@ -91,6 +91,8 @@ namespace Steganography
 
         private void btnDecrypt_Click(object sender, EventArgs e)
         {
+            tbText.Text = "";
+
             if (pbImage.Image != null)
             {
                 Bitmap bitmap = new Bitmap(pbImage.Image);
