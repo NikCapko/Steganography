@@ -29,7 +29,8 @@ namespace Steganography
                 }
                 catch
                 {
-                    MessageBox.Show("Не удалось загрузить выбранное изображение");
+                    MessageBox.Show("Невозможно загрузить изображение", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -46,7 +47,27 @@ namespace Steganography
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-
+            if (pbImage.Image != null)
+            {
+                SaveFileDialog savedialog = new SaveFileDialog();
+                savedialog.Title = "Сохранить картинку как...";
+                savedialog.OverwritePrompt = true;
+                savedialog.CheckPathExists = true;
+                savedialog.Filter = "Image Files(*.JPG)|*.JPG|Image Files(*.BMP)|*.BMP|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
+                savedialog.ShowHelp = true;
+                if (savedialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        pbImage.Image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Невозможно сохранить изображение", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }

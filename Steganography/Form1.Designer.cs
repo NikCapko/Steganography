@@ -43,7 +43,7 @@
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(211, 71);
             this.btnEncrypt.TabIndex = 0;
-            this.btnEncrypt.Text = "Encrypt";
+            this.btnEncrypt.Text = "Шифровать";
             this.btnEncrypt.UseVisualStyleBackColor = true;
             this.btnEncrypt.Click += new System.EventHandler(this.btnEncrypt_Click);
             // 
@@ -66,7 +66,7 @@
             this.btnDecrypt.Name = "btnDecrypt";
             this.btnDecrypt.Size = new System.Drawing.Size(211, 71);
             this.btnDecrypt.TabIndex = 2;
-            this.btnDecrypt.Text = "Decrypt";
+            this.btnDecrypt.Text = "Извлечь";
             this.btnDecrypt.UseVisualStyleBackColor = true;
             this.btnDecrypt.Click += new System.EventHandler(this.btnDecrypt_Click);
             // 
@@ -76,6 +76,7 @@
             this.tbText.Location = new System.Drawing.Point(12, 12);
             this.tbText.Multiline = true;
             this.tbText.Name = "tbText";
+            this.tbText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbText.Size = new System.Drawing.Size(776, 96);
             this.tbText.TabIndex = 3;
             // 
@@ -86,7 +87,7 @@
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(211, 71);
             this.btnSave.TabIndex = 4;
-            this.btnSave.Text = "Save image";
+            this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
