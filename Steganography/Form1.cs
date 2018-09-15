@@ -68,6 +68,18 @@ namespace Steganography
                     byte[] strBytes = Encoding.Unicode.GetBytes(text);
                     string s = BitConverter.ToString(strBytes, 0);
                     BitArray bitArray = new BitArray(strBytes);
+                    string bitString = "";
+                    for (int i = 0; i < bitArray.Count; i++)
+                    {
+                        bitString += Convert.ToInt32(bitArray.Get(i)).ToString();
+                    }
+                    byte[] byteArray = Enumerable.Range(0, bitString.Length / 8).
+                                    Select(pos => Convert.ToByte(bitString.Substring(pos * 8, 8), 2)).ToArray();
+                    var str = Encoding.Unicode.GetString(byteArray);
+                    strBytes = Encoding.Unicode.GetBytes(str);
+                    s = BitConverter.ToString(strBytes, 0);
+                    bitArray = new BitArray(strBytes);
+
                     int length = bitArray.Length;
                     int index = 0;
                     if (length <= bitmap.Height * bitmap.Width)
@@ -76,12 +88,21 @@ namespace Steganography
                         {
                             for (int j = 0; j < bitmap.Height; j++)
                             {
-                                if (length - 3 > index)
+                                if (length > index)
                                 {
                                     Color color1 = bitmap.GetPixel(i, j);
-                                    int r = (color1.R == 255 && Convert.ToInt32(bitArray.Get(index)) == 1) ? 254 : color1.R + Convert.ToInt32(bitArray.Get(index));
-                                    int g = (color1.G == 255 && Convert.ToInt32(bitArray.Get(index + 1)) == 1) ? 254 : color1.G + Convert.ToInt32(bitArray.Get(index + 1));
-                                    int b = (color1.B == 255 && Convert.ToInt32(bitArray.Get(index + 2)) == 1) ? 254 : color1.B + Convert.ToInt32(bitArray.Get(index + 2));
+                                    int r = 0, g = 0, b = 0;
+                                    try
+                                    {
+                                        r = (color1.R == 255 && Convert.ToInt32(bitArray.Get(index)) == 1) ? 254 : color1.R + Convert.ToInt32(bitArray.Get(index));
+                                        g = (color1.G == 255 && Convert.ToInt32(bitArray.Get(index + 1)) == 1) ? 254 : color1.G + Convert.ToInt32(bitArray.Get(index + 1));
+                                        b = (color1.B == 255 && Convert.ToInt32(bitArray.Get(index + 2)) == 1) ? 254 : color1.B + Convert.ToInt32(bitArray.Get(index + 2));
+                                    }
+                                    catch
+                                    {
+                                        if (index - length == 1) { b = color1.B >= 2 ? color1.B - 2 : color1.B + 2; }
+                                        if (index - length == 2) { g = color1.G >= 2 ? color1.G - 2 : color1.G + 2; }
+                                    }
                                     Color color2 = Color.FromArgb(color1.A, r, g, b);
                                     bitmap.SetPixel(i, j, color2);
                                     index += 3;
@@ -125,7 +146,6 @@ namespace Steganography
 
                 Bitmap bitmap1 = new Bitmap(pbImage1.Image);
                 Bitmap bitmap2 = new Bitmap(pbImage2.Image);
-
                 string bitString = "";
 
                 ArrayList arrayList = new ArrayList();
@@ -136,11 +156,10 @@ namespace Steganography
                     {
                         for (int j = 0; j < bitmap1.Height; j++)
                         {
-                            if (Math.Abs(bitmap1.GetPixel(i, j).R - bitmap2.GetPixel(i, j).R) == 2)
+                            if (Math.Abs(bitmap1.GetPixel(i, j).R - bitmap2.GetPixel(i, j).R) == 2 || Math.Abs(bitmap1.GetPixel(i, j).G - bitmap2.GetPixel(i, j).G) == 2 || Math.Abs(bitmap1.GetPixel(i, j).B - bitmap2.GetPixel(i, j).B) == 2)
                             {
                                 byte[] byteArray = Enumerable.Range(0, bitString.Length / 8).
                                     Select(pos => Convert.ToByte(bitString.Substring(pos * 8, 8), 2)).ToArray();
-                                BitArray bitArray = new BitArray(arrayList.Count);
                                 var str = Encoding.Unicode.GetString(byteArray);
                                 tbText.Text = str;
                                 return;
@@ -150,10 +169,6 @@ namespace Steganography
                                 int r = Math.Abs(bitmap1.GetPixel(i, j).R - bitmap2.GetPixel(i, j).R);
                                 int g = Math.Abs(bitmap1.GetPixel(i, j).G - bitmap2.GetPixel(i, j).G);
                                 int b = Math.Abs(bitmap1.GetPixel(i, j).B - bitmap2.GetPixel(i, j).B);
-
-                                //arrayList.Add(r == 1 ? true : false);
-                                //arrayList.Add(g == 1 ? true : false);
-                                //arrayList.Add(b == 1 ? true : false);
 
                                 bitString += r.ToString() + g.ToString() + b.ToString();
                             }

@@ -42,6 +42,7 @@
             // 
             // btnEncrypt
             // 
+            this.btnEncrypt.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEncrypt.Font = new System.Drawing.Font("Palatino Linotype", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnEncrypt.Location = new System.Drawing.Point(607, 139);
             this.btnEncrypt.Name = "btnEncrypt";
@@ -55,6 +56,7 @@
             // 
             this.pbImage1.BackColor = System.Drawing.Color.White;
             this.pbImage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbImage1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbImage1.Location = new System.Drawing.Point(12, 190);
             this.pbImage1.Name = "pbImage1";
             this.pbImage1.Size = new System.Drawing.Size(276, 357);
@@ -65,6 +67,7 @@
             // 
             // btnDecrypt
             // 
+            this.btnDecrypt.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDecrypt.Font = new System.Drawing.Font("Palatino Linotype", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnDecrypt.Location = new System.Drawing.Point(607, 216);
             this.btnDecrypt.Name = "btnDecrypt";
@@ -86,6 +89,7 @@
             // 
             // btnSave
             // 
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSave.Font = new System.Drawing.Font("Palatino Linotype", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnSave.Location = new System.Drawing.Point(607, 357);
             this.btnSave.Name = "btnSave";
@@ -99,6 +103,7 @@
             // 
             this.pbImage2.BackColor = System.Drawing.Color.White;
             this.pbImage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbImage2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbImage2.Location = new System.Drawing.Point(306, 190);
             this.pbImage2.Name = "pbImage2";
             this.pbImage2.Size = new System.Drawing.Size(276, 357);
@@ -141,6 +146,7 @@
             this.Controls.Add(this.pbImage1);
             this.Controls.Add(this.btnEncrypt);
             this.Name = "fmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Steganography";
             ((System.ComponentModel.ISupportInitialize)(this.pbImage1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage2)).EndInit();
